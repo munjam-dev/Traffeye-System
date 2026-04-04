@@ -9,12 +9,12 @@ import { LivePreview } from '@/components/live-preview'
 import { FeaturesSection } from '@/components/features-section'
 import { AnalyticsPreview } from '@/components/analytics-preview'
 import { Footer } from '@/components/footer'
-import { useLanguage } from '@/hooks/use-language'
+import { LanguageProvider, useLanguage } from '@/hooks/use-language'
 
-export default function HomePage() {
+function HomeContent() {
   const [showLanguageSelector, setShowLanguageSelector] = useState(true)
   const [selectedLanguage, setSelectedLanguage] = useState('')
-  const { t, language } = useLanguage()
+  const { t, language, setLanguage } = useLanguage()
 
   useEffect(() => {
     // Check if language is already selected
@@ -27,7 +27,7 @@ export default function HomePage() {
 
   const handleLanguageSelect = (lang: string) => {
     setSelectedLanguage(lang)
-    localStorage.setItem('traffeye-language', lang)
+    setLanguage(lang as any)
     setShowLanguageSelector(false)
   }
 
@@ -54,5 +54,13 @@ export default function HomePage() {
       {/* Footer */}
       <Footer />
     </div>
+  )
+}
+
+export default function HomePage() {
+  return (
+    <LanguageProvider>
+      <HomeContent />
+    </LanguageProvider>
   )
 }
